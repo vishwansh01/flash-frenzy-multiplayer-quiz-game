@@ -4,12 +4,12 @@ import Game from "@/models/Game";
 
 export async function GET(
   request: NextRequest,
-  context: { params: Promise<{ roomCode: string }> }
+  { params }: { params: Promise<{ roomCode: string }> }
 ) {
   try {
     await connectDB();
 
-    const { roomCode } = await context.params;
+    const { roomCode } = await params;
     const game = await Game.findOne({ roomCode });
 
     if (!game) {

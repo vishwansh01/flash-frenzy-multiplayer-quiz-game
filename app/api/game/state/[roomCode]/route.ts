@@ -4,7 +4,7 @@ import Game from "@/models/Game";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { roomCode: string } }
+  { params }: { params: Promise<{ roomCode: string }> }
 ) {
   try {
     await connectDB();
