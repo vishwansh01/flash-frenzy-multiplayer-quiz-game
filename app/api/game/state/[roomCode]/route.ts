@@ -10,6 +10,7 @@ export async function GET(
     await connectDB();
 
     const { roomCode } = await params;
+    // console.log(roomCode);
     const game = await Game.findOne({ roomCode });
 
     if (!game) {

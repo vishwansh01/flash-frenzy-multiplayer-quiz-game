@@ -42,10 +42,7 @@ export default function AuthForm() {
   return (
     <form onSubmit={handleAuth} className="space-y-4">
       <div>
-        <label
-          htmlFor="email"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <label htmlFor="email" className="block text-sm font-medium">
           Email
         </label>
         <input
@@ -59,10 +56,7 @@ export default function AuthForm() {
       </div>
 
       <div>
-        <label
-          htmlFor="password"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <label htmlFor="password" className="block text-sm font-medium">
           Password
         </label>
         <input

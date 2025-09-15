@@ -27,7 +27,11 @@ export async function POST(request: NextRequest) {
     };
     game.updatedAt = new Date();
     await game.save();
-    setTimeout(() => checkGameState(roomCode), 1000);
+    setTimeout(() => {
+      // console.log("ASENMREKRKTEj");
+      // console.log("AWJRj")
+      checkGameState(roomCode);
+    }, 1000);
 
     return NextResponse.json({ success: true });
   } catch (error) {
@@ -51,6 +55,7 @@ async function checkGameState(roomCode: string) {
     const timeLeft = Math.max(0, 15 - Math.floor(timeSinceStart / 1000));
 
     if (game.gameState.phase === "question") {
+      // Check if all players answered
       const playersAnswered = game.players.filter((player: any) =>
         player.answeredQuestions.includes(game.currentQuestion)
       ).length;
@@ -60,19 +65,26 @@ async function checkGameState(roomCode: string) {
       const timeUp = timeLeft <= 0;
 
       if (allAnswered || timeUp) {
+        // Move to answer reveal phase
         game.gameState.phase = "answer_reveal";
         game.gameState.answerRevealTime = now;
         game.gameState.timeLeft = 0;
         await game.save();
+
+        // Schedule next question or end game
         setTimeout(() => {
           if (game.currentQuestion + 1 >= game.questions.length) {
             endGame(roomCode);
           } else {
             nextQuestion(roomCode);
           }
-        }, 3000);
+        }, 3000); // 3 seconds to show answer
+      } else {
+        // Update time left
         game.gameState.timeLeft = timeLeft;
         await game.save();
+
+        // Continue checking
         setTimeout(() => checkGameState(roomCode), 1000);
       }
     }

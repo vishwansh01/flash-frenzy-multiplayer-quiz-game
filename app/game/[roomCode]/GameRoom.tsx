@@ -27,7 +27,10 @@ export default function GameRoom({ roomCode, userId }: GameRoomProps) {
         fetchGameState();
       })
       .subscribe();
-    const pollInterval = setInterval(fetchGameState, 2000);
+    const pollInterval = setInterval(() => {
+      fetchGameState();
+      console.log("GSJE");
+    }, 2000);
 
     return () => {
       supabase.removeChannel(channel);
@@ -53,6 +56,7 @@ export default function GameRoom({ roomCode, userId }: GameRoomProps) {
       const response = await fetch(`/api/game/state/${roomCode}`);
       if (response.ok) {
         const gameData = await response.json();
+        console.log("gamedata", gameData);
         setGame(gameData);
       }
     } catch (error) {
@@ -115,8 +119,8 @@ export default function GameRoom({ roomCode, userId }: GameRoomProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-        <div className="bg-white rounded-lg shadow-xl p-8 text-center">
+      <div className="min-h-screen bg-[linear-gradient(to_bottom,hsl(220,65%,5%)_0%,hsl(220,65%,3.52%)_50%,hsl(220,65%,10%)_100%)] flex items-center justify-center">
+        <div className="bg-[#080c15] border-[#004be0] border rounded-lg shadow-xl p-8 text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <div className="text-xl font-semibold text-gray-800">
             Loading game...
@@ -128,11 +132,9 @@ export default function GameRoom({ roomCode, userId }: GameRoomProps) {
 
   if (!game) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-        <div className="bg-white rounded-lg shadow-xl p-8 text-center max-w-md w-full mx-4">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">
-            Game Not Found
-          </h1>
+      <div className="min-h-screen bg-[linear-gradient(to_bottom,hsl(220,65%,5%)_0%,hsl(220,65%,3.52%)_50%,hsl(220,65%,10%)_100%)] flex items-center justify-center">
+        <div className="bg-[#080c15] border-[#004be0] border rounded-lg shadow-xl p-8 text-center max-w-md w-full mx-4">
+          <h1 className="text-2xl font-bold text-white mb-4">Game Not Found</h1>
           <button
             onClick={() => router.push("/")}
             className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg"
@@ -148,34 +150,28 @@ export default function GameRoom({ roomCode, userId }: GameRoomProps) {
     const winner = sortedPlayers[0];
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg shadow-xl p-8 text-center max-w-md w-full">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">
-            🏆 Game Over!
-          </h1>
+      <div className="min-h-screen bg-[linear-gradient(to_bottom,hsl(220,65%,5%)_0%,hsl(220,65%,3.52%)_50%,hsl(220,65%,10%)_100%)] flex items-center justify-center p-4">
+        <div className="bg-[#080c15] border-[#004be0] text-white border rounded-lg shadow-xl p-8 text-center max-w-md w-full">
+          <h1 className="text-3xl font-bold  mb-4">🏆 Game Over!</h1>
 
           <div className="mb-6">
-            <h2 className="text-xl font-semibold text-gray-700 mb-2">
-              Winner:
-            </h2>
+            <h2 className="text-xl font-semibold  mb-2">Winner:</h2>
             <p className="text-2xl font-bold text-green-600">{winner.name}</p>
-            <p className="text-gray-600">
+            <p className="">
               Score: {winner.score}/{game.questions.length}
             </p>
           </div>
 
           <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-700 mb-3">
-              Final Scores:
-            </h3>
+            <h3 className="text-lg font-semibold  mb-3">Final Scores:</h3>
             <div className="space-y-2">
               {sortedPlayers.map((player, index) => (
                 <div
                   key={player.id}
                   className={`flex justify-between items-center p-2 rounded ${
                     player.id === userId
-                      ? "bg-blue-100 border-2 border-blue-300"
-                      : "bg-gray-50"
+                      ? "bg-blue-600 border-2 border-blue-300"
+                      : "bg-blue-500"
                   }`}
                 >
                   <span className="font-medium">
@@ -191,7 +187,7 @@ export default function GameRoom({ roomCode, userId }: GameRoomProps) {
 
           <button
             onClick={() => router.push("/")}
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors"
+            className="w-full bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg transition-colors"
           >
             Back to Home
           </button>
@@ -204,18 +200,14 @@ export default function GameRoom({ roomCode, userId }: GameRoomProps) {
     const hasEnoughPlayers = game.players.length >= 2;
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 p-4">
+      <div className="min-h-screen bg-[linear-gradient(to_bottom,hsl(220,65%,5%)_0%,hsl(220,65%,3.52%)_50%,hsl(220,65%,10%)_100%)] p-4">
         <div className="max-w-2xl mx-auto">
-          <div className="bg-white rounded-lg shadow-xl p-8 text-center">
-            <h1 className="text-3xl font-bold text-gray-800 mb-4">
-              🃏 Flashcard Frenzy
-            </h1>
-            <h2 className="text-xl font-semibold text-gray-700 mb-6">
-              Room: {roomCode}
-            </h2>
+          <div className="bg-[#080c15] border-[#004be0] text-white rounded-lg shadow-xl p-8 text-center">
+            <h1 className="text-3xl font-bold mb-4">🃏 Flashcard Frenzy</h1>
+            <h2 className="text-xl font-semibold mb-6">Room: {roomCode}</h2>
 
             <div className="mb-8">
-              <h3 className="text-lg font-semibold text-gray-700 mb-4">
+              <h3 className="text-lg font-semibold mb-4">
                 Players in Room ({game.players.length}):
               </h3>
               <div className="space-y-2">
@@ -224,8 +216,8 @@ export default function GameRoom({ roomCode, userId }: GameRoomProps) {
                     key={player.id}
                     className={`p-3 rounded-lg ${
                       player.id === userId
-                        ? "bg-blue-100 border-2 border-blue-300"
-                        : "bg-gray-100"
+                        ? "bg-blue-600 border-2 border-blue-300"
+                        : "bg-blue-500"
                     }`}
                   >
                     <span className="font-medium">
@@ -282,18 +274,16 @@ export default function GameRoom({ roomCode, userId }: GameRoomProps) {
   ).length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 p-4">
+    <div className="min-h-screen bg-[linear-gradient(to_bottom,hsl(220,65%,5%)_0%,hsl(220,65%,3.52%)_50%,hsl(220,65%,10%)_100%)] p-4">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-lg shadow-xl p-4 mb-4">
+        <div className="bg-[#080c15] border-[#004be0] text-white rounded-lg shadow-xl p-4 mb-4">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-2xl font-bold text-gray-800">
-                Room: {roomCode}
-              </h1>
-              <p className="text-sm text-gray-600">
+              <h1 className="text-2xl font-bold">Room: {roomCode}</h1>
+              <p className="text-sm text-gray-400">
                 Question {game.currentQuestion + 1} of {game.questions.length}
               </p>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-200">
                 {playersAnswered}/{game.players.length} players answered
               </p>
             </div>
@@ -311,7 +301,7 @@ export default function GameRoom({ roomCode, userId }: GameRoomProps) {
                   ? "⏸️"
                   : `${game.gameState.timeLeft}s`}
               </div>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-400">
                 {game.gameState.phase === "answer_reveal"
                   ? "Showing Answer"
                   : "Time Left"}
@@ -332,10 +322,8 @@ export default function GameRoom({ roomCode, userId }: GameRoomProps) {
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-lg shadow-xl p-4 mb-4">
-          <h2 className="text-lg font-semibold text-gray-800 mb-3">
-            🏆 Scoreboard
-          </h2>
+        <div className="bg-[#080c15] border-[#004be0] border rounded-lg shadow-xl p-4 mb-4">
+          <h2 className="text-lg font-semibold mb-3">🏆 Scoreboard</h2>
           <div className="grid gap-2">
             {game.players
               .sort((a, b) => b.score - a.score)
@@ -348,8 +336,8 @@ export default function GameRoom({ roomCode, userId }: GameRoomProps) {
                     key={player.id}
                     className={`flex justify-between items-center p-3 rounded-lg ${
                       player.id === userId
-                        ? "bg-blue-100 border-2 border-blue-500"
-                        : "bg-gray-50"
+                        ? "bg-blue-600 border-2 border-white"
+                        : "bg-blue-500"
                     }`}
                   >
                     <div className="flex items-center space-x-2">
@@ -362,14 +350,14 @@ export default function GameRoom({ roomCode, userId }: GameRoomProps) {
                           ? "🥉"
                           : `${index + 1}.`}
                       </span>
-                      <span className="font-medium">
+                      <span className="font-medium text-white">
                         {player.name} {player.id === userId && "(You)"}
                       </span>
                       <span className="text-sm">
                         {playerAnswered ? "✅" : "⏳"}
                       </span>
                     </div>
-                    <span className="font-bold text-xl text-blue-600">
+                    <span className="font-bold text-xl text-white">
                       {player.score}
                     </span>
                   </div>
@@ -377,12 +365,12 @@ export default function GameRoom({ roomCode, userId }: GameRoomProps) {
               })}
           </div>
         </div>
-        <div className="bg-white rounded-lg shadow-xl p-6 mb-4">
+        <div className="bg-[#080c15] border-white border text-white rounded-lg shadow-xl p-6 mb-4">
           <div className="mb-6">
             <span className="inline-block bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium mb-4">
               📚 {currentQuestion.category}
             </span>
-            <h2 className="text-2xl font-bold text-gray-800 leading-tight">
+            <h2 className="text-2xl font-bold leading-tight">
               {currentQuestion.question}
             </h2>
           </div>
@@ -390,7 +378,7 @@ export default function GameRoom({ roomCode, userId }: GameRoomProps) {
           <div className="grid gap-3">
             {currentQuestion.options.map((option, index) => {
               let buttonClass =
-                "w-full p-4 text-left border-2 rounded-lg transition-all duration-300 font-medium";
+                "w-full p-4 text-left text-black border-2 rounded-lg transition-all duration-300 font-medium";
 
               if (game.gameState.phase === "answer_reveal") {
                 if (index === currentQuestion.correctAnswer) {

@@ -49,18 +49,15 @@ export default function CreateGame() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-      <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full mx-4">
-        <h1 className="text-2xl font-bold text-center text-gray-800 mb-8">
+    <div className="min-h-screen bg-[linear-gradient(to_bottom,hsl(220,65%,5%)_0%,hsl(220,65%,3.52%)_50%,hsl(220,65%,10%)_100%)] flex items-center justify-center">
+      <div className="bg-[#080c15] border-[#004be0] border text-white rounded-lg shadow-xl p-8 max-w-md w-full mx-4">
+        <h1 className="text-2xl font-bold text-center  mb-8">
           Create Game Room
         </h1>
 
         <form onSubmit={createGame} className="space-y-4">
           <div>
-            <label
-              htmlFor="playerName"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="playerName" className="block text-sm font-medium">
               Your Name
             </label>
             <input
